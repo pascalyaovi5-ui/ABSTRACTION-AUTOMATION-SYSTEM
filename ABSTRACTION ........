@@ -1,0 +1,147 @@
+import random
+from abc import ABC, abstractmethod
+
+
+# 1. Abstract Base Class
+class BuildingSystem(ABC):
+
+  def init(self, name):
+    self.name = name
+    self.is_running = False
+
+  @abstractmethod
+  def start(self):
+    pass
+
+  @abstractmethod
+  def stop(self):
+    pass
+
+  @abstractmethod
+  def status(self):
+    pass
+
+
+# 2. Child Class: AirConditioningSystem
+class AirConditioningSystem(BuildingSystem):
+
+  def init(self, name, temperature=22):
+    super().init(name)
+    self.temperature = temperature
+
+  def start(self):
+    self.is_running = True
+    print(
+        f"[{self.name}] AC turned ON. Cooling set to {self.temperature}°C."
+    )
+
+  def stop(self):
+    self.is_running = False
+    print(f"[{self.name}] AC turned OFF.")
+
+  def status(self):
+    state = "Running" if self.is_running else "Stopped"
+    print(
+        f"[{self.name}] Status: {state} | Target Temperature:"
+        f" {self.temperature}°C"
+    )
+
+
+# 3. Child Class: LightingSystem
+class LightingSystem(BuildingSystem):
+
+  def init(self, name, brightness=80):
+    super().init(name)
+    self.brightness = brightness
+
+  def start(self):
+    self.is_running = True
+    print(
+        f"[{self.name}] Lights turned ON. Brightness level: {self.brightness}%."
+    )
+
+  def stop(self):
+    self.is_running = False
+    print(f"[{self.name}] Lights turned OFF.")
+
+  def status(self):
+    state = "Running" if self.is_running else "Stopped"
+    print(
+        f"[{self.name}] Status: {state} | Brightness Level: {self.brightness}%"
+    )
+
+
+# 4. Child Class: SecuritySystem
+class SecuritySystem(BuildingSystem):
+
+  def init(self, name, zone_count=5):
+    super().init(name)
+    self.zone_count = zone_count
+
+  def start(self):
+    self.is_running = True
+    print(
+        f"[{self.name}] Security System ARMED across {self.zone_count} zones."
+    )
+
+  def stop(self):
+    self.is_running = False
+    print(f"[{self.name}] Security System DISARMED.")
+
+  def status(self):
+    state = "Armed" if self.is_running else "Disarmed"
+    print(f"[{self.name}] Status: {state} | Monitored Zones: {self.zone_count}")
+
+
+# 5. Extension: New Class added without altering the processing loop
+class FireAlarmSystem(BuildingSystem):
+
+  def init(self, name, sensor_count=12):
+    super().init(name)
+    self.sensor_count = sensor_count
+
+  def start(self):
+    self.is_running = True
+    print(
+        f"[{self.name}] Fire Alarm System ACTIVATED with {self.sensor_count}"
+        " active sensors."
+    )
+
+  def stop(self):
+    self.is_running = False
+    print(f"[{self.name}] Fire Alarm System STANDBY.")
+
+  def status(self):
+    state = "ACTIVE" if self.is_running else "STANDBY"
+    print(
+        f"[{self.name}] Status: {state} | Active Sensors: {self.sensor_count}"
+    )
+
+
+# 6. Demonstration Loop
+if name == "main":
+  # Create list of systems (Polymorphism)
+  systems = [
+      AirConditioningSystem("Main Auditorium AC", temperature=20),
+      LightingSystem("Stage Lighting", brightness=100),
+      SecuritySystem("Auditorium Perimeter Security", zone_count=8),
+      FireAlarmSystem("Auditorium Fire Alarm", sensor_count=15),
+  ]
+
+  print("=" * 60)
+  print("STARTING ALL BUILDING SYSTEMS")
+  print("=" * 60)
+  for system in systems:
+    system.start()
+
+  print("\n" + "=" * 60)
+  print("CHECKING SYSTEM STATUSES")
+  print("=" * 60)
+  for system in systems:
+    system.status()
+
+  print("\n" + "=" * 60)
+  print("STOPPING ALL BUILDING SYSTEMS")
+  print("=" * 60)
+  for system in systems:
+    system.stop()
